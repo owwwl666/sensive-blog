@@ -10,7 +10,7 @@ class PostQuerySet(models.QuerySet):
             order_by('-likes_count', 'title')
 
     def fetch_with_comments_count(self):
-        """Используется вместо второго annotate.
+        """Используется вместо второго annotate для подгрузки количества комментариев к посту.
 
         Уменьшает нагрузку на БД и сокращает время загрузки страницы сайта."""
         most_popular_posts_ids = [post.id for post in self]
@@ -27,7 +27,8 @@ class PostQuerySet(models.QuerySet):
 
 class TagQuerySet(models.QuerySet):
     def popular(self):
-        return self.annotate(posts_count=Count('posts')).order_by('-posts_count')
+        most_popular_posts_tags = self.annotate(posts_count=Count('posts')).order_by('-posts_count')
+        return most_popular_posts_tags
 
 
 class Post(models.Model):
