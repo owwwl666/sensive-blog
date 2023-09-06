@@ -13,7 +13,6 @@ class PostQuerySet(models.QuerySet):
         """Используется вместо второго annotate для нахождения количества комментариев к посту.
 
         Уменьшает нагрузку на БД и сокращает время загрузки страницы сайта."""
-        # most_popular_posts_ids = [post.id for post in self]
         most_popular_posts_comments = Post.objects.annotate(comments_count=Count('comments'))
         ids_and_comments = most_popular_posts_comments.values_list('id', 'comments_count')
         count_for_id = dict(ids_and_comments)
