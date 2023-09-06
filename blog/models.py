@@ -9,6 +9,9 @@ class PostQuerySet(models.QuerySet):
         return self.annotate(likes_count=Count('likes')). \
             order_by('-likes_count', 'title')
 
+    def count_comments(self):
+        return self.annotate(comments_count=Count('comments'))
+
     def fetch_with_comments_count(self):
         """Используется вместо второго annotate для нахождения количества комментариев к посту.
 
